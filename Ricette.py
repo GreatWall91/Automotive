@@ -1,45 +1,45 @@
-#Grafiche
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
 import sys
-import random
 
-Titolidisponibili = [x for x in range(10)]
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSpinBox
 
-class _MainWindow(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Ricette")
+        self.setWindowTitle("MyApp")
 
-        self.button = QPushButton("Aggiungi")
+        widget = QSpinBox()
 
-        self.button.clicked.connect(self.thebutton)
-        self.windowTitleChanged.connect(self.changedtitle)
+        widget.setMinimum(-10)
+        widget.setMaximum(10)
 
-        self.setCentralWidget(self.button)
+        widget.setPrefix("$")
+        widget.setSuffix("c")
 
-    def thebutton(self, ciao):        
-        self.setWindowTitle(f"{random.choice(Titolidisponibili)}")
+        widget.setSingleStep(3)
 
-    def changedtitle(self, title__):
-        print(title__)
-        if title__ == "5":
-            self.button.setEnabled(False)
-            self.button.setText("porcodio")
+        widget.valueChanged.connect(self.value_changed)
+        widget.valueChanged[str].connect(self.value_changed_str)
 
+        self.setCentralWidget(widget)
 
+    def value_changed(self, i):
+        print(i)
 
+    def value_changed_str(self, j):
+        print(j)
 
 
 #Classe di tutti gli step tranne quello di base.
 class NewStep:
-    StepNumber = 0
-    IsScrewStep = False
-    Steps = [False for x in range(5)]
-    IsNecessary = [False for x in range(5)]
-    Wait = 0
-    Text = ""
+    def __init__(self):
+        self.StepNumber = 0
+        self.IsScrewStep = False
+        self.Steps = [False for x in range(5)]
+        self.IsNecessary = [False for x in range(5)]
+        self.Wait = 0
+        self.Text = ""
     def WriteNewStep(self, FilePath):
 
         #File aperto in modalità append
@@ -84,10 +84,8 @@ MainApp = QApplication(sys.argv)
 
 #Finestra principale abilitata a essere vista.
 #Tutto è un widget, in questo caso la finestra.
-#MainWindow = QWidget()
-MainWindow = _MainWindow()
-MainWindow.show()
+
+MainMainWindow = MainWindow()
+MainMainWindow.show()
 
 MainApp.exec_()
-
-
